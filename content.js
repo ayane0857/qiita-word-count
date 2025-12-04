@@ -1,26 +1,24 @@
 (function () {
-    const editors = document.querySelectorAll('.cm-content.cm-lineWrapping');
-    const gutters = document.querySelectorAll('.cm-gutterElement');
+    const editors = document.querySelectorAll('.mdContent-inner');
 
-
-    if (editors.length === 0) {
+    if (!editors.length) {
         alert('エディタが見つかりませんでした。');
         return;
     }
 
-    if (gutters.length === 0) {
-        alert('行番号エリアが見つかりませんでした。');
-        return;
-    }
+    // 複数の要素がある場合、改行で繋げて取得
+    const rawText = Array.from(editors)
+        .map(div => div.textContent)
+        .join('\n');
 
-    let text = '';
+    // 空白（スペース、改行、タブ）をすべて削除したもの
+    const textNoSpace = rawText.replace(/\s+/g, '');
 
-    editors.forEach(div => {
-        text += div.textContent;
-    });
-
-    const lastGutter = gutters[gutters.length - 1].textContent;
-    const truetext = text.replace(/\s+/g, '');
-
-    alert(`文字数: ${text.length}（${truetext.length}）文字\n行数: ${lastGutter}行`);
+    // 結果を表示
+    alert(
+        `【文字数カウント結果】\n` +
+        `------------------------\n` +
+        `空白なし: ${textNoSpace.length} 文字\n` +
+        `空白込み: ${rawText.length} 文字`
+    );
 })();
